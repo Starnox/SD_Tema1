@@ -1,0 +1,19 @@
+put www.google.com 1.1.1.1
+print
+remove www.google.com
+print
+put www.google.com 1.1.1.1
+print
+remove www.google.com
+print
+put www.google.com 1.2.3.2
+print
+print
+remove a
+remove b
+put a 1
+put b 2
+put c 1
+print_bucket 1
+print_bucket 0
+print_bucket 2
