@@ -1,6 +1,6 @@
 #include "generic_double_list.h"
 
-int InsertCellEnd(TCellPointer* root, void * info)
+int InsertCellEnd(TCellPointer* root, void * info, CompareFunction cmpFunction)
 {
     TCellPointer newCell = (TCellPointer) malloc(sizeof(TCell));
 
@@ -19,12 +19,31 @@ int InsertCellEnd(TCellPointer* root, void * info)
     }
     else
     {
-        TCellPointer end = (*root)->previous;
-        end->next = newCell;
-        newCell->previous = end;
-        (*root)->previous = newCell;
-        newCell->next = *root;
+        // caut pozitia
+        TCellPointer aux = *root;
+        while(cmpFunction(info, aux->info) < 0)
+        {
+            aux = aux->next;
+            if(aux == *root)
+            {
+                // ultimul element din lista
+                TCellPointer end = (*root)->previous;
+                end->next = newCell;
+                newCell->previous = end;
+                (*root)->previous = newCell;
+                newCell->next = *root;
+                newCell->info = info;
+                return 1;
+            }
+        }
+        // fac inserare inainte de aux
+        aux->previous->next = newCell;
+        newCell->previous = aux->previous;
+        newCell->next = aux;
+        aux->previous = newCell;
         newCell->info = info;
+        if(aux == *root)
+            *root = newCell;
     }
     return 1;
 }

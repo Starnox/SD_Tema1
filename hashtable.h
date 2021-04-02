@@ -32,5 +32,6 @@ char* ExtractElement(THashTablePointer, char *);
 int HashFunction(char *, int bucketSize);
 
 void DestroyHashTable(THashTablePointer *);
+int MyCompareFunction(void *, void *);
 
 void FreePair(void *);

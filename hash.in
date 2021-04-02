@@ -1,19 +1,27 @@
-put www.google.com 1.1.1.1
+put www.google.com 8.8.8.8
+find www.yahoo.com
+put www.yahoo.com 5.5.5.4
+put www.google.ro 8.8.2.1
 print
 remove www.google.com
 print
-put www.google.com 1.1.1.1
-print
-remove www.google.com
-print
-put www.google.com 1.2.3.2
-print
-print
-remove a
-remove b
-put a 1
-put b 2
-put c 1
-print_bucket 1
-print_bucket 0
 print_bucket 2
+remove www.google.com
+print_bucket 2
+find www.yahoo.com
+get www.yahoo.com
+get www.gmail.com
+put www.jahoo.com 7.7.7.7
+print_bucket 1
+print
+put www.doogle.com 0.0.0.0
+put www.mahoo.com 6.6.6.6
+print
+remove www.doogle.com
+print_bucket 1
+remove www.doogle.com
+print_bucket 1
+put www.aahoo.com 131.131
+print
+put www.yyhoo.com 135.135.0
+print_bucket 1

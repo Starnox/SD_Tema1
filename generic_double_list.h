@@ -8,10 +8,10 @@ typedef struct cell
 } TCell, *TCellPointer;
 
 typedef char* (*DisplayFunction) (void *);
-typedef void (*CompareFunction) (void *, void *);
+typedef int (*CompareFunction) (void *, void *);
 typedef void (*FreeInfoFunction) (void *);
 
-int InsertCellEnd(TCellPointer*, void *); // insereaza la finalul listei o noua celula (1/0) reusita
+int InsertCellEnd(TCellPointer*, void *, CompareFunction); // insereaza la finalul listei o noua celula (1/0) reusita
 void DisplayList(TCellPointer*, DisplayFunction); // afiseaza elementele listei
 void EliminateCell(TCellPointer*, TCellPointer, FreeInfoFunction);
 void DestroyList(TCellPointer*, FreeInfoFunction);

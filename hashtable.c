@@ -44,7 +44,7 @@ int InsertElement(THashTablePointer hashTable, TPairPointer info)
   
     if(!bucket) // primul element din lista
     {
-        int result = InsertCellEnd(hashTable->buckets+code, info);
+        int result = InsertCellEnd(hashTable->buckets+code, info, MyCompareFunction);
         return result;
     }
 
@@ -57,7 +57,7 @@ int InsertElement(THashTablePointer hashTable, TPairPointer info)
         if(strcmp(((TPairPointer)element->next->info)->key , info->key) == 0)
             return 0;
     }
-    int result = InsertCellEnd(hashTable->buckets+code, info);
+    int result = InsertCellEnd(hashTable->buckets+code, info, MyCompareFunction);
     return result;
 }
 
@@ -89,7 +89,6 @@ int DisplayBucket(THashTablePointer hashTable, DisplayFunction displayFunc, int 
     
     if(bucket) // daca bucketul contine ceva
     {
-        fprintf(outputFile, "%d: ", index);
         TCellPointer element = bucket;
         
 
@@ -214,9 +213,18 @@ void DestroyHashTable(THashTablePointer * hashTable)
 
     for(p = (*hashTable)->buckets; p < (*hashTable)->buckets + (*hashTable)->bucketSize; p++)
     {
-        DestroyList(p, FreePair);
+        if(*p)
+            DestroyList(p, FreePair);
     }
     free((*hashTable)->buckets);
     free(*hashTable);
     *hashTable = NULL;
+}
+
+int MyCompareFunction(void * a, void * b)
+{
+    TPairPointer x = (TPairPointer) a;
+    TPairPointer y = (TPairPointer) b;
+
+    return strcmp(y->key, x->key);
 }
