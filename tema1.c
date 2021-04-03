@@ -1,25 +1,27 @@
+/* MIHAILESCU Eduard-Florin - 312CB */
 #include "tema1.h"
 
 int bucketSize;
 
 int main(int argc, char *argv[])
 {
-    if(argc != 4){
+    if(argc != 4){ // verific nr de parametri introdusi
         printf("Introdu numarul corect de parametri");
         return 1;
     }
-    bucketSize = atoi(argv[1]);
+    bucketSize = atoi(argv[1]); // extrag nr de bucketuri
 
     THashTablePointer hashTable = InitialiseHashMap(bucketSize);
     // declarare si intializare fisiere de intrare si iesire
     FILE *inputFile = fopen(argv[2], "r");
     FILE *outputFile = fopen(argv[3], "w");
 
-    // read the data
+    // citire linie cu linie
     char *line = NULL;
     size_t length = 0;
     while(getline(&line, &length, inputFile) != -1)
     {
+        // se delimiteaza cuvintele cheie si se apeleaza functie corespunzatoare
         char *command = strtok(line, " ");
         if(command[strlen(command) - 1] == '\n')
             command[strlen(command) - 1] = '\0';
@@ -81,8 +83,9 @@ int main(int argc, char *argv[])
         }
         
     }
-    free(line);
 
+    // Eliberare memorie
+    free(line);
     DestroyHashTable(&hashTable);
     fclose(inputFile);
     fclose(outputFile);
@@ -90,7 +93,7 @@ int main(int argc, char *argv[])
 
 char *MyDisplayFunction(void *info)
 {
-    // TODO free the result
+    // Functia de afisare a valorii din structura
     TPairPointer keyValuePair = (TPairPointer) info;
     char *result = malloc(MAX_LENGTH * sizeof(char));
     if(!result)
@@ -115,10 +118,12 @@ int Put(THashTablePointer hashTable ,char *address, char *ip)
     keyValuePair->key = (char *) malloc(strlen(address)+1);
     keyValuePair->value = (char *) malloc(strlen(ip)+1);
 
-    //keyValuePair->key = address;
+    // aloc valorile
     strcpy(keyValuePair->key, address);
     strcpy(keyValuePair->value, ip);
 
+
+    // apelez insert-ul din fisierul sursa corespunzator tabelei hash
     if(InsertElement(hashTable, keyValuePair) != 1)
     {
         printf("Inserarea nu a avut loc");
@@ -130,6 +135,7 @@ int Put(THashTablePointer hashTable ,char *address, char *ip)
 
 char* Find(THashTablePointer hashTable, char *toFind)
 {
+    // verific daca gasesc elementul cu cheia "toFind"
     char* result = (char *)malloc(MAX_LENGTH);
 
     if(result == NULL)
@@ -169,7 +175,7 @@ void Remove(THashTablePointer hashTable, char *toRemove)
 
 void Print(THashTablePointer hashMap, FILE* outputFile)
 {
-    DisplayHashTable(hashMap, MyDisplayFunction, outputFile);
+    DisplayHashTable(hashMap, outputFile);
 }
 
 void PrintBucket(int indexBucket, THashTablePointer hashMap, FILE* outputFile)

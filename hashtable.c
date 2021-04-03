@@ -1,7 +1,9 @@
+/* MIHAILESCU Eduard-Florin - 312CB */
 #include "hashtable.h"
 
 THashTablePointer InitialiseHashMap(int bucketSize)
 {
+    // alocare memorie tabela
     THashTablePointer hashTable = (THashTablePointer) malloc(sizeof(THashTable));
 
     if(!hashTable)
@@ -10,7 +12,7 @@ THashTablePointer InitialiseHashMap(int bucketSize)
         return NULL;
     }
 
-    
+    //alocare memorie pentru fiecare bucket
     hashTable->buckets = (TCellPointer *) calloc(bucketSize, sizeof(TCellPointer));
 
     if(!hashTable->buckets)
@@ -20,11 +22,13 @@ THashTablePointer InitialiseHashMap(int bucketSize)
         return NULL;
     }
 
+    // setare parametru
     hashTable->bucketSize = bucketSize;
 
     return hashTable;
 }
 
+// Functia hash data in enunt
 int HashFunction(char *info, int bucketSize)
 {
     int sum = 0;
@@ -38,16 +42,22 @@ int HashFunction(char *info, int bucketSize)
 
 int InsertElement(THashTablePointer hashTable, TPairPointer info)
 {
+    // verific codul hash al cheii
     int code = HashFunction(info->key, hashTable->bucketSize);
     TCellPointer bucket = hashTable->buckets[code];
     TCellPointer element = bucket;
   
     if(!bucket) // primul element din lista
     {
-        int result = InsertCellEnd(hashTable->buckets+code, info, MyCompareFunction);
+        // inserez direct
+        int result = InsertCellOrdered(hashTable->buckets+code, info, MyCompareFunction);
         return result;
     }
 
+
+    // daca nu, verific daca elementul este deja in tabela
+    // prima verificare o fac in afara instructiunii repetitive 
+    // deoarece lista este circulara
     if(strcmp(((TPairPointer)element->info)->key , info->key) == 0)
     {
         return 0;
@@ -57,19 +67,22 @@ int InsertElement(THashTablePointer hashTable, TPairPointer info)
         if(strcmp(((TPairPointer)element->next->info)->key , info->key) == 0)
             return 0;
     }
-    int result = InsertCellEnd(hashTable->buckets+code, info, MyCompareFunction);
+    // apelez functia de inserare specifica listei dublu inlantuite
+    int result = InsertCellOrdered(hashTable->buckets+code, info, MyCompareFunction);
     return result;
 }
 
-void DisplayHashTable(THashTablePointer hashTable, DisplayFunction displayFunc, FILE *outputFile)
+void DisplayHashTable(THashTablePointer hashTable, FILE *outputFile)
 {
     TCellPointer bucket, element;
 
+    // iterez prin fiecare bucket
     for(int i = 0; i< hashTable->bucketSize; ++i)
     {
         bucket = hashTable->buckets[i];
         if(bucket)// daca bucketul contine ceva
         {
+            // afisez in formatul specificat
             fprintf(outputFile,"%d: ", i);
             element = bucket;
             fprintf(outputFile,"%s ",((TPairPointer)element->info)->value);
@@ -114,22 +127,25 @@ int DisplayBucket(THashTablePointer hashTable, DisplayFunction displayFunc, int 
 
 int DeleteElement(THashTablePointer hashTable, char *key)
 {
+    // iau codul hash
     int code = HashFunction(key, hashTable->bucketSize);
     TCellPointer bucket = hashTable->buckets[code];
     TCellPointer element = bucket;
 
+    // daca bucketul e gol, elementul nu se afla aici
     if(!bucket)
     {
         return 0;
     }
 
+    // verificare primul element
     if(strcmp(((TPairPointer)element->info)->key, key) == 0)
     {
         EliminateCell(&bucket,bucket, FreePair); // elimina prima celula
         hashTable->buckets[code] = bucket;
         return 1;
     }
-
+    // verificare urmatoarele elemente
     for(; element->next != bucket; element = element->next)
     {
         if(strcmp(((TPairPointer)element->next->info)->key, key) == 0)
@@ -155,11 +171,13 @@ int FindElement(THashTablePointer hashTable, char *key)
 
     TCellPointer element = bucket;
 
+    // verificare primul element
     if(strcmp(((TPairPointer)element->info)->key, key) == 0)
     {
         return 1;
     }
 
+    // verificare urmatoarele elemente
     for(; element->next != bucket; element = element->next)
     {
         if(strcmp(((TPairPointer)element->next->info)->key, key) == 0)
@@ -198,6 +216,7 @@ char* ExtractElement(THashTablePointer hashTable, char *key)
 
 void FreePair(void * info)
 {
+    // Eliberare memorie pentru o structura de tip TPairPointer
     TPairPointer pair = (TPairPointer) info;
     free(pair->key);
     free(pair->value);
@@ -209,12 +228,14 @@ void FreePair(void * info)
 
 void DestroyHashTable(THashTablePointer * hashTable)
 {
+    // Eliberare memorie pentru tabela hash
     TCellPointer *p, el, aux;
 
+    // pentru fiecare bucket
     for(p = (*hashTable)->buckets; p < (*hashTable)->buckets + (*hashTable)->bucketSize; p++)
     {
         if(*p)
-            DestroyList(p, FreePair);
+            DestroyList(p, FreePair); // eliberez lista aferenta bucketului
     }
     free((*hashTable)->buckets);
     free(*hashTable);
@@ -223,6 +244,7 @@ void DestroyHashTable(THashTablePointer * hashTable)
 
 int MyCompareFunction(void * a, void * b)
 {
+    // functia de comparare a cheilor
     TPairPointer x = (TPairPointer) a;
     TPairPointer y = (TPairPointer) b;
 

@@ -1,6 +1,7 @@
+/* MIHAILESCU Eduard-Florin - 312CB */
 #include "generic_double_list.h"
 
-int InsertCellEnd(TCellPointer* root, void * info, CompareFunction cmpFunction)
+int InsertCellOrdered(TCellPointer* root, void * info, CompareFunction cmpFunction)
 {
     TCellPointer newCell = (TCellPointer) malloc(sizeof(TCell));
 
@@ -9,9 +10,10 @@ int InsertCellEnd(TCellPointer* root, void * info, CompareFunction cmpFunction)
         printf("eroare alocare");
         return 0;
     }
-    // The first cell
+    // Daca e primul element
     if(*root == NULL)
     {
+        // creez legaturile aferente
         *root = newCell;
         (*root)->info = info;
         (*root)->next = *root;
@@ -46,11 +48,6 @@ int InsertCellEnd(TCellPointer* root, void * info, CompareFunction cmpFunction)
             *root = newCell;
     }
     return 1;
-}
-
-void DisplayList(TCellPointer* root, DisplayFunction displayFunc)
-{
-
 }
 
 void DestroyList(TCellPointer* root, FreeInfoFunction freeFunc)
@@ -89,7 +86,7 @@ void EliminateCell(TCellPointer* root, TCellPointer toEliminate, FreeInfoFunctio
             freeFunc((*root)->info);
             free(*root);
             *root = NULL;
-        }
+        }// nu e singurul element
         else
         {
             *root = (*root)->next;
@@ -110,7 +107,7 @@ void EliminateCell(TCellPointer* root, TCellPointer toEliminate, FreeInfoFunctio
     {
         aux = aux->next;
     }
-    if(aux == *root)
+    if(aux == *root) 
     {
         (*root) = (*root)->next;
     }

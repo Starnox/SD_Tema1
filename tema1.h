@@ -1,3 +1,4 @@
+/* MIHAILESCU Eduard-Florin - 312CB */
 #include <string.h>
 #include "hashtable.h"
 
