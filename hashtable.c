@@ -98,6 +98,9 @@ void DisplayHashTable(THashTablePointer hashTable, FILE *outputFile)
 
 int DisplayBucket(THashTablePointer hashTable, DisplayFunction displayFunc, int index , FILE* outputFile)
 {
+    if(index >= hashTable->bucketSize)
+        return -1; // bucketul nu exista
+
     TCellPointer bucket = hashTable->buckets[index];
     
     if(bucket) // daca bucketul contine ceva

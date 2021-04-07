@@ -126,7 +126,9 @@ int Put(THashTablePointer hashTable ,char *address, char *ip)
     // apelez insert-ul din fisierul sursa corespunzator tabelei hash
     if(InsertElement(hashTable, keyValuePair) != 1)
     {
-        printf("Inserarea nu a avut loc");
+        free(keyValuePair->key);
+        free(keyValuePair->value);
+        free(keyValuePair);
         return 0;
     }
 

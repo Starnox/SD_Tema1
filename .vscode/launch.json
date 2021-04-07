@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}/${fileBasenameNoExtension}",
-            "args": ["3","hash.in", "hash.out"],
+            "args": ["4","hash.in", "hash.out"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

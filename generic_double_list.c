@@ -117,5 +117,6 @@ void EliminateCell(TCellPointer* root, TCellPointer toEliminate, FreeInfoFunctio
     aux->previous = NULL;
     aux->next = NULL;
     freeFunc(aux->info);
+    free(aux);
 
 }
