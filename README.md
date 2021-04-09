@@ -4,7 +4,7 @@
 
 ### Descriere generala
 Codul a fost impartit in 3 fisiere sursa si 3 fisiere header aferente.
-Astfel in 'tema1.c' se afla functia `main()` si reprezinta punctul de plecare a programului.
+Astfel in 'tema1.c' se afla functia `main()` si reprezinta punctul de plecare al programului.
 In fisierul 'hashtable.c' este implementata tabela hash care apeleaza functii
 din fisierul 'generic_double_list.c' care contine functiile de gestionare 
 a listelor generice dublu inlantuite circulare
@@ -47,7 +47,7 @@ Fiecare caz este tratat separat
 
 ### Functia de eliminare element
 *   `void EliminateCell(TCellPointer* root, TCellPointer toEliminate, FreeInfoFunction freeFunc)` - se verifica in primul rand daca elementul ce trebuie eliminat este inceputul listei. In caz afirmativ, acesta 
-trebuie inlocuit cu urmatorul element si refacute legaturile. In caz contrar, se cauta in lista pana se ajunge la elementul trimis, se produc schimbarile de legaturi si se elibereaza memeorie in ordinea in care a fost alocat (mai intai informatia din celula prin functia `freeFunc()`, dupa care celula in sine cu `free()`)
+trebuie inlocuit cu urmatorul element si refacute legaturile. In caz contrar, se cauta in lista pana se ajunge la elementul trimis, se produc schimbarile de legaturi si se elibereaza memeoria in ordinea in care a fost alocata (mai intai informatia din celula prin functia `freeFunc()`, dupa care celula in sine cu `free()`)
 
 
 
