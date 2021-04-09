@@ -168,6 +168,7 @@ char* Get(THashTablePointer hashTable, char *toGet)
     {
         strcpy(result, ExtractElement(hashTable, toGet));
     }
+    return result;
 }
 
 void Remove(THashTablePointer hashTable, char *toRemove)

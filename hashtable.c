@@ -232,7 +232,7 @@ void FreePair(void * info)
 void DestroyHashTable(THashTablePointer * hashTable)
 {
     // Eliberare memorie pentru tabela hash
-    TCellPointer *p, el, aux;
+    TCellPointer *p;
 
     // pentru fiecare bucket
     for(p = (*hashTable)->buckets; p < (*hashTable)->buckets + (*hashTable)->bucketSize; p++)
